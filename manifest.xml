@@ -23,4 +23,9 @@
 		<name>search</name>
 	</suggests>
 
+	<requires>
+		<type>plugin</type>
+		<name>forms_api</name>
+	</requires>
+	
 </plugin_manifest>
