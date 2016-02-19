@@ -28,4 +28,7 @@ echo elgg_view('lists/groups', array(
 ### Custom sort fields
 
 Use `'sort_fields','group'` plugin hook to add new fields to the sort select input.
-Use `'sort_options', 'group'` to add custom queries to ege* options.
+Use `'sort_relationships','group'` plugin hook to add new relationship/metadata filter options.
+
+Use `'rel_options', 'group'` to add custom queries to ege* options for specici sort field and direction.
+Use `'sort_options', 'group'` to add custom queries to ege* options for specific relationship/metadata filter option.
