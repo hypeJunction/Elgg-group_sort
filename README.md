@@ -13,7 +13,7 @@ Group List Sorting for Elgg
 
 ## Usage
 
-### List users
+### List groups
 
 ```php
 
