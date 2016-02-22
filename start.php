@@ -15,7 +15,7 @@ elgg_register_event_handler('init', 'system', 'group_sort_init');
  * @return void
  */
 function group_sort_init() {
-	elgg_extend_view('elgg.css', 'forms/group/sort.css');
+	elgg_extend_view('css/elgg', 'forms/group/sort.css');
 }
 
 /**
