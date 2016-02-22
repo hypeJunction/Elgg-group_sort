@@ -162,8 +162,13 @@ function group_sort_add_rel_options(array $options = array(), $rel = '', $user =
 				WHERE guid_one = $guid AND relationship = 'membership_request' AND guid_two = e.guid)";
 			break;
 	}
+
+	$params = array(
+		'rel' => $rel,
+		'user' => $user,
+	);
 	
-	return elgg_trigger_plugin_hook('rel_options', 'group', null, $options);
+	return elgg_trigger_plugin_hook('rel_options', 'group', $params, $options);
 }
 
 /**
