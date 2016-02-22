@@ -103,7 +103,12 @@ function group_sort_add_sort_options(array $options = array(), $field = 'time_cr
 
 	$options['order_by'] = implode(', ', array_unique(array_filter($order_by)));
 
-	return elgg_trigger_plugin_hook('sort_options', 'group', null, $options);
+	$params = array(
+		'field' => $field,
+		'direction' => $direction,
+	);
+	
+	return elgg_trigger_plugin_hook('sort_options', 'group', $params, $options);
 }
 
 /**
