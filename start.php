@@ -60,7 +60,7 @@ function group_sort_add_sort_options(array $options = array(), $field = 'time_cr
 
 	$order_by = explode(',', elgg_extract('order_by', $options, ''));
 	array_walk($order_by, 'trim');
-	
+
 	$options['joins']['groups_entity'] = "JOIN {$dbprefix}groups_entity AS groups_entity ON groups_entity.guid = e.guid";
 
 	switch ($field) {
@@ -83,7 +83,7 @@ function group_sort_add_sort_options(array $options = array(), $field = 'time_cr
 			$options['joins']['member_count'] = "LEFT JOIN {$dbprefix}entity_relationships AS member_count ON member_count.guid_two = e.guid AND member_count.relationship = 'member'";
 			$options['selects']['member_count'] = "COUNT(member_count.guid_one) as member_count";
 			$options['group_by'] = 'e.guid';
-			
+
 			array_unshift($order_by, "member_count {$direction}");
 			break;
 
@@ -107,7 +107,7 @@ function group_sort_add_sort_options(array $options = array(), $field = 'time_cr
 		'field' => $field,
 		'direction' => $direction,
 	);
-	
+
 	return elgg_trigger_plugin_hook('sort_options', 'group', $params, $options);
 }
 
@@ -128,7 +128,7 @@ function group_sort_add_rel_options(array $options = array(), $rel = '', $user =
 	}
 
 	$guid = ($user) ? (int) $user->guid : 0;
-	
+
 	switch ($rel) {
 
 		case 'closed' :
@@ -172,7 +172,7 @@ function group_sort_add_rel_options(array $options = array(), $rel = '', $user =
 		'rel' => $rel,
 		'user' => $user,
 	);
-	
+
 	return elgg_trigger_plugin_hook('rel_options', 'group', $params, $options);
 }
 
@@ -211,14 +211,47 @@ function group_sort_get_rel_options(array $params = array()) {
  */
 function group_sort_add_search_query_options(array $options = array(), $query = '') {
 
-	if (!elgg_is_active_plugin('search')) {
+	if (!elgg_is_active_plugin('search') || !$query) {
 		return $options;
 	}
+
+	$query = sanitize_string($query);
+
+	$advanced = elgg_extract('advanced_search', $options, false);
 
 	$dbprefix = elgg_get_config('dbprefix');
 	$options['joins']['groups_entity'] = "JOIN {$dbprefix}groups_entity AS groups_entity ON groups_entity.guid = e.guid";
 
 	$fields = array('name');
-	$options['wheres'][] = search_get_where_sql('groups_entity', $fields, ['query' => $query], false);
+	if ($advanced) {
+		$fields[] = 'description';
+	}
+	$where = search_get_where_sql('groups_entity', $fields, ['query' => $query], false);
+
+	$profile_fields = array_keys((array) elgg_get_config('group'));
+	$profile_fields = array_diff($profile_fields, $fields);
+	
+	if ($advanced && !empty($profile_fields)) {
+		$options['joins']['profile_fields_md'] = "JOIN {$dbprefix}metadata profile_fields_md on e.guid = profile_fields_md.entity_guid";
+		$options['joins']['profile_fields_msv'] = "JOIN {$dbprefix}metastrings profile_fields_msv ON n_table.value_id = profile_fields_msv.id";
+
+		$clauses = _elgg_entities_get_metastrings_options('metadata', array(
+			'metadata_names' => $profile_fields,
+			'metadata_values' => null,
+			'metadata_name_value_pairs' => null,
+			'metadata_name_value_pairs_operator' => null,
+			'metadata_case_sensitive' => null,
+			'order_by_metadata' => null,
+			'metadata_owner_guids' => null,
+		));
+
+		$options['joins'] = array_merge($clauses['joins'], $options['joins']);
+		$profile_fields_md_where = "(({$clauses['wheres'][0]}) AND profile_fields_msv.string LIKE '%$query%')";
+
+		$options['wheres'][] = "(($where) OR ($profile_fields_md_where))";
+	} else {
+		$options['wheres'][] = "$where";
+	}
+
 	return $options;
 }
