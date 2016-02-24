@@ -1,3 +1,21 @@
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/hypeJunction/Elgg-group_sort/compare/1.0.2...v1.1.0) (2016-02-24)
+
+
+### Bug Fixes
+
+* **forms:** add an exception when subtype value is an array ([785baec](https://github.com/hypeJunction/Elgg-group_sort/commit/785baec))
+* **forms:** fix input names to match search plugin ([970dffc](https://github.com/hypeJunction/Elgg-group_sort/commit/970dffc))
+* **languages:** add missing labels ([f761b0b](https://github.com/hypeJunction/Elgg-group_sort/commit/f761b0b))
+* **sql:** fix group by clause ([2e38170](https://github.com/hypeJunction/Elgg-group_sort/commit/2e38170))
+
+### Features
+
+* **forms:** add subtype picker ([622c005](https://github.com/hypeJunction/Elgg-group_sort/commit/622c005))
+* **search:** add an option to perform and advanced search that includes profile fields ([1cd0276](https://github.com/hypeJunction/Elgg-group_sort/commit/1cd0276))
+
+
+
 <a name="1.0.2"></a>
 ## [1.0.2](https://github.com/hypeJunction/Elgg-group_sort/compare/1.0.0...v1.0.2) (2016-02-22)
 
