@@ -74,9 +74,13 @@ function group_sort_add_sort_options(array $options = array(), $field = 'time_cr
 		case 'enabled' :
 		case 'time_created';
 		case 'time_updated' :
-		case 'last_action' :
 		case 'access_id' :
 			array_unshift($order_by, "e.{$field} {$direction}");
+			break;
+
+		case 'last_action' :
+			$options['selects']['last_action'] = "GREATEST(e.time_created, e.last_action, e.time_updated) as last_action";
+			array_unshift($order_by, "last_action {$direction}");
 			break;
 
 		case 'member_count' :
@@ -230,7 +234,7 @@ function group_sort_add_search_query_options(array $options = array(), $query = 
 
 	$profile_fields = array_keys((array) elgg_get_config('group'));
 	$profile_fields = array_diff($profile_fields, $fields);
-	
+
 	if ($advanced && !empty($profile_fields)) {
 		$options['joins']['profile_fields_md'] = "JOIN {$dbprefix}metadata profile_fields_md on e.guid = profile_fields_md.entity_guid";
 		$options['joins']['profile_fields_msv'] = "JOIN {$dbprefix}metastrings profile_fields_msv ON n_table.value_id = profile_fields_msv.id";
