@@ -6,6 +6,8 @@ return [
 	'group:rel:label' => 'Show',
 	'group:sort:search:placeholder' => 'Enter search keyword...',
 	'group:sort:search:empty' => 'No results matching your query',
+	'group:subtype:label' => 'Type',
+	'group:subtype:all' => 'All',
 
 	'groups:rel:' => 'All',
 	'groups:rel:open' => 'Open membership',
@@ -24,5 +26,4 @@ return [
 	'groups:sort:member_count::asc' => 'Least popular first',
 	'groups:sort:last_action::asc' => 'Latest activity first',
 	'groups:sort:last_action::desc' => 'Latest activity last',
-
 ];
