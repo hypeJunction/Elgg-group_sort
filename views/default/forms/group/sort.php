@@ -15,7 +15,7 @@ if (elgg_extract('show_subtype', $vars, false)) {
 			$subtype_options_values[$subtype] = elgg_echo("item:group:$subtype");
 		}
 		$fields .= elgg_view_input('select', array(
-			'name' => 'subtype',
+			'name' => 'entity_subtype',
 			'value' => elgg_extract('subtype', $vars, ''),
 			'options_values' => $subtype_options_values,
 			'class' => 'group-sort-select',
@@ -79,6 +79,11 @@ if (!$fields) {
 echo elgg_format_element('div', [
 	'class' => 'group-sort-fieldset',
 		], $fields);
+
+echo elgg_view_input('hidden', array(
+	'name' => 'entity_type',
+	'value' => 'group',
+));
 
 echo elgg_view_input('submit', array(
 	'class' => 'hidden',
