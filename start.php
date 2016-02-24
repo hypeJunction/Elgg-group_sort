@@ -82,7 +82,7 @@ function group_sort_add_sort_options(array $options = array(), $field = 'time_cr
 		case 'member_count' :
 			$options['joins']['member_count'] = "LEFT JOIN {$dbprefix}entity_relationships AS member_count ON member_count.guid_two = e.guid AND member_count.relationship = 'member'";
 			$options['selects']['member_count'] = "COUNT(member_count.guid_one) as member_count";
-			$options['group_by'] = 'member_count.guid_two';
+			$options['group_by'] = 'e.guid';
 			
 			array_unshift($order_by, "member_count {$direction}");
 			break;
